@@ -3,7 +3,6 @@
 - 🔭 Hoje trabalho com front-end
 - 🌱 Estudando Javascript e React
 - 📫 Contate-me no email: abertiluigy@gmail.com
-- 😄 Pronouns: ele/dele
 
 <div align="center">
   <img src="https://github-readme-stats.shion.dev/api?username=AlbertiLuigy&theme=tokyonight&show_icons=true&hide_border=false&count_private=false" alt="Estatísticas do Alberti Luigy" />
@@ -13,11 +12,7 @@
 <br>
 
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/AlbertiLuigy/AlbertiLuigy/output/github-contribution-grid-snake.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/AlbertiLuigy/AlbertiLuigy/output/github-contribution-grid-snake.svg">
-    <img alt="Snake contribution graph" src="https://raw.githubusercontent.com/AlbertiLuigy/AlbertiLuigy/output/github-contribution-grid-snake.svg">
-  </picture>
+  <img src="https://raw.githubusercontent.com/AlbertiLuigy/AlbertiLuigy/output/github-contribution-grid-snake.svg" alt="Snake contribution graph">
 </div>
 
 ###
