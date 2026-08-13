@@ -1,7 +1,7 @@
 ## Olá, me chamo Alberti Luigy 👋
 
-- 🔭 Hoje trabalho com front-end
-- 🌱 Estudando Javascript e React
+- 🔭 Hoje trabalho com Full-Stack
+- 🌱 Estudando Java
 - 📫 Contate-me no email: abertiluigy@gmail.com
 
 <div align="center">
