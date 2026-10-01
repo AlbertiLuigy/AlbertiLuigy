@@ -2,10 +2,10 @@
 """
 Atualiza automaticamente o README.md do perfil com:
 - Ultimos repositorios (projetos) criados/atualizados
-- Atividade recente (commits, PRs, issues)
-- Grafico de atividade mensal (SVG inline)
+- Atividade recente (commits, PRs, issues) SEM REPETICAO
+- Grafico de atividade mensal renderizado como emoji/markdown (sem SVG quebrado)
 
-Usa a API oficial do GitHub via `gh` ou `requests`.
+Usa a API oficial do GitHub via urllib.
 Marcadores HTML comentados no README definem onde cada bloco vai.
 """
 
@@ -13,9 +13,7 @@ import os
 import re
 import sys
 import json
-import math
 import datetime
-import subprocess
 from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
@@ -23,7 +21,7 @@ from urllib.error import URLError, HTTPError
 GITHUB_USERNAME = "AlbertiLuigy"
 README_PATH = Path(__file__).resolve().parent.parent / "README.md"
 MAX_REPOS = 4
-MAX_ACTIVITY = 6
+MAX_ACTIVITY = 5
 DAYS_BACK = 30
 
 GH_TOKEN = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
@@ -61,7 +59,6 @@ def replace_chunk(content, marker, chunk):
 
 
 def fmt_dt_relative(iso_str):
-    """Retorna string relativa tipo '3 dias atras' a partir de ISO-8601."""
     if not iso_str:
         return ""
     try:
@@ -88,24 +85,19 @@ def fmt_dt_relative(iso_str):
     return f"{months // 12} ano(s) atrás"
 
 
-def lang_color(lang):
-    colors = {
-        "Java": "#b07219",
-        "JavaScript": "#f1e05a",
-        "TypeScript": "#3178c6",
-        "Python": "#3572A5",
-        "HTML": "#e34c26",
-        "CSS": "#563d7c",
-        "PHP": "#4F5D95",
-        "C": "#555555",
-        "Shell": "#89e051",
-        "Dockerfile": "#384d54",
-    }
-    return colors.get(lang, "#cccccc")
+def pretty_repo_name(name):
+    """Torna nomes de repositorio mais legiveis."""
+    pretty = name.replace("-", " ").replace("_", " ")
+    pretty = re.sub(r"\s+", " ", pretty).strip()
+    words = pretty.split()
+    if len(words) > 1 and words[0].lower() in {"projeto", "app", "demo", "api", "sistema"}:
+        pretty = " ".join(words[1:])
+    if not pretty:
+        return name
+    return pretty.title()
 
 
 def fetch_repos():
-    """Busca repositorios publicos ordenados por ultimo push."""
     params = f"per_page={MAX_REPOS + 6}&sort=pushed&type=owner"
     data = gh_api(f"/users/{GITHUB_USERNAME}/repos?{params}")
     if not data:
@@ -120,93 +112,152 @@ def build_repos_chunk(repos):
     lines = []
     for r in repos:
         name = r["name"]
+        display = pretty_repo_name(name)
         url = r["html_url"]
-        desc = (r.get("description") or "Sem descrição").strip()
-        lang = r.get("language")
-        stars = r.get("stargazers_count", 0)
-        forks = r.get("forks_count", 0)
+        desc = (r.get("description") or "").strip()
+        lang = r.get("language") or ""
+        stars = r.get("stargazers_count", 0) or 0
+        forks = r.get("forks_count", 0) or 0
         updated = fmt_dt_relative(r.get("pushed_at"))
-        lang_badge = ""
-        if lang:
-            c = lang_color(lang)
-            lang_badge = (
-                f'<img src="https://img.shields.io/badge/'
-                f'{lang}-{c[1:]}.svg?style=flat-square&logoColor=white" height="18"/> '
-            )
+        if not lang:
+            lang_text = ""
+        else:
+            lang_text = f"**`{lang}`**"
         meta = []
+        if lang_text:
+            meta.append(lang_text)
         if stars:
             meta.append(f"⭐ {stars}")
         if forks:
             meta.append(f"🍴 {forks}")
         meta.append(f"🕒 {updated}")
         meta_str = " · ".join(meta)
-        lines.append(
-            f"- [{name}]({url}) — {desc}\n"
-            f"  <br>&nbsp;&nbsp;{lang_badge} <sub>{meta_str}</sub>"
-        )
+        if desc:
+            lines.append(f"- **[{display}]({url})** — {desc}\n  <br> <sub>{meta_str}</sub>")
+        else:
+            lines.append(f"- **[{display}]({url})**\n  <br> <sub>{meta_str}</sub>")
     return "\n".join(lines) + "\n"
 
 
 def fetch_recent_activity():
-    """Retorna eventos publicos recentes."""
-    data = gh_api(f"/users/{GITHUB_USERNAME}/events/public?per_page={MAX_ACTIVITY + 10}")
+    """
+    Retorna eventos recentes AGRUPADOS para nao repetir.
+    - Push events: agrupa por (repo, branch), soma commits, usa msg mais recente.
+    - Demais eventos: mantem 1 por tipo/repo.
+    """
+    data = gh_api(f"/users/{GITHUB_USERNAME}/events/public?per_page=30")
     if not data:
         return []
-    events = []
+
+    pushes = {}  # chave (repo, branch) -> {total_commits, msg, created, url}
+    other_events = []  # lista de (text, created)
+
     for ev in data:
         etype = ev.get("type", "")
         repo_name = ev.get("repo", {}).get("name", "")
+        short_repo = repo_name.split("/")[-1] if repo_name else ""
         repo_url = f"https://github.com/{repo_name}"
         created = ev.get("created_at")
         payload = ev.get("payload", {})
-        text = None
+        display_repo = pretty_repo_name(short_repo) if short_repo else repo_name
+
         if etype == "PushEvent":
-            commits = payload.get("commits", [])
-            n = payload.get("distinct_size") or payload.get("size") or len(commits) or 1
-            msg = commits[0]["message"].splitlines()[0] if commits else (
-                payload.get("head", "")[:70] if payload.get("head") else ""
-            )
-            if len(msg) > 70:
-                msg = msg[:67] + "..."
             branch = (payload.get("ref") or "").replace("refs/heads/", "")
-            text = f"📌 {n} commit(s) em `{branch}` de [{repo_name.split('/')[-1]}]({repo_url})"
-            if msg:
-                text += f" — <sub>_{msg}_</sub>"
+            key = (repo_name, branch)
+            commits_list = payload.get("commits", []) or []
+            n = payload.get("distinct_size") or payload.get("size") or len(commits_list) or 1
+            msg = ""
+            if commits_list:
+                first = commits_list[-1] if len(commits_list) > 1 else commits_list[0]
+                msg = (first.get("message") or "").splitlines()[0].strip()
+            if len(msg) > 72:
+                msg = msg[:69] + "..."
+            # Pula eventos push que so tem SHA (sem mensagem real)
+            if msg and len(msg) == 40 and re.fullmatch(r"[0-9a-f]+", msg):
+                msg = ""
+            if key not in pushes:
+                pushes[key] = {"total": 0, "msg": msg or "", "created": created, "url": repo_url, "display": display_repo, "branch": branch}
+            pushes[key]["total"] += n
+            if msg and not pushes[key]["msg"]:
+                pushes[key]["msg"] = msg
+            # Sempre atualiza created pra ficar o mais recente
+            pushes[key]["created"] = created
+
         elif etype == "CreateEvent":
             ref_type = payload.get("ref_type", "")
             if ref_type == "repository":
-                text = f"🆕 Criou o repositório [{repo_name.split('/')[-1]}]({repo_url})"
+                text = f"🆕 Criou o repositório **[{display_repo}]({repo_url})**"
             elif ref_type == "branch":
-                text = f"🌿 Criou branch `{payload.get('ref')}` em [{repo_name.split('/')[-1]}]({repo_url})"
+                ref = payload.get("ref") or ""
+                # Ignora branches padrao criadas automaticamente (main/master)
+                if ref in {"main", "master"}:
+                    continue
+                text = f"🌿 Criou branch `{ref}` em **[{display_repo}]({repo_url})**"
             else:
                 continue
+            other_events.append({"text": text, "created": created, "sort_key": (repo_name, "create")})
+
         elif etype == "PullRequestEvent":
             action = payload.get("action", "")
             pr = payload.get("pull_request", {})
-            pr_url = pr.get("html_url", repo_url)
             title = (pr.get("title") or "").strip()
-            if len(title) > 70:
-                title = title[:67] + "..."
-            emoji = "✅" if action == "closed" and pr.get("merged") else "🔀" if action == "closed" else "📬"
-            action_pt = {"opened": "abriu", "closed": "fechou", "reopened": "reabriu"}.get(action, action)
-            text = f"{emoji} {action_pt} PR em [{repo_name.split('/')[-1]}]({repo_url}) — <sub>_{title}_</sub>"
+            if len(title) > 72:
+                title = title[:69] + "..."
+            if action == "closed" and pr.get("merged"):
+                emoji, action_pt = "✅", "fez merge de PR"
+            elif action == "closed":
+                emoji, action_pt = "🔀", "fechou PR"
+            elif action == "opened":
+                emoji, action_pt = "📬", "abriu PR"
+            elif action == "reopened":
+                emoji, action_pt = "🔓", "reabriu PR"
+            else:
+                emoji, action_pt = "🔀", action
+            t = f"{emoji} {action_pt} em **[{display_repo}]({repo_url})**"
+            if title:
+                t += f" — _{title}_"
+            other_events.append({"text": t, "created": created, "sort_key": (repo_name, "pr", action)})
+
         elif etype == "IssuesEvent":
             action = payload.get("action", "")
             issue = payload.get("issue", {})
             title = (issue.get("title") or "").strip()
-            if len(title) > 70:
-                title = title[:67] + "..."
-            text = f"🐛 {action} issue em [{repo_name.split('/')[-1]}]({repo_url}) — <sub>_{title}_</sub>"
+            if len(title) > 72:
+                title = title[:69] + "..."
+            t = f"🐛 {action} issue em **[{display_repo}]({repo_url})**"
+            if title:
+                t += f" — _{title}_"
+            other_events.append({"text": t, "created": created, "sort_key": (repo_name, "issue", action)})
+
         elif etype == "WatchEvent":
-            text = f"⭐ Deu uma estrela em [{repo_name.split('/')[-1]}]({repo_url})"
+            t = f"⭐ Deu uma estrela em **[{display_repo}]({repo_url})**"
+            other_events.append({"text": t, "created": created, "sort_key": (repo_name, "star")})
+
         elif etype == "ForkEvent":
-            text = f"🍴 Fez fork de [{repo_name.split('/')[-1]}]({repo_url})"
-        else:
+            t = f"🍴 Forkou **[{display_repo}]({repo_url})**"
+            other_events.append({"text": t, "created": created, "sort_key": (repo_name, "fork")})
+
+    # Converte pushes agrupados em eventos do tipo lista
+    push_events = []
+    for (repo_name, branch), info in pushes.items():
+        total = info["total"]
+        branch_part = f" na branch `{branch}`" if branch and branch != "main" and branch != "master" else ""
+        text = f"📌 {total} commit(s){branch_part} em **[{info['display']}]({info['url']})**"
+        if info["msg"]:
+            text += f" — _{info['msg']}_"
+        push_events.append({"text": text, "created": info["created"]})
+
+    # Unifica todos eventos, ordena por data decrescente, remove duplicados textuais
+    all_ev = []
+    seen_texts = set()
+    for ev in push_events + other_events:
+        if ev["text"] in seen_texts:
             continue
-        events.append({"text": text, "created": created})
-        if len(events) >= MAX_ACTIVITY:
-            break
-    return events
+        seen_texts.add(ev["text"])
+        all_ev.append(ev)
+
+    all_ev.sort(key=lambda e: e["created"], reverse=True)
+    return all_ev[:MAX_ACTIVITY]
 
 
 def build_activity_chunk(events):
@@ -215,18 +266,19 @@ def build_activity_chunk(events):
     lines = []
     for ev in events:
         when = fmt_dt_relative(ev["created"])
-        lines.append(f"- {ev['text']}\n  <br>&nbsp;&nbsp;<sub>🕒 {when}</sub>")
+        lines.append(f"- {ev['text']}\n  <br> <sub>🕒 {when}</sub>")
     return "\n".join(lines) + "\n"
 
 
-def build_monthly_graph_svg():
-    """Constroi grafico de barras SVG inline com contrib dos ultimos 30 dias."""
+def build_monthly_activity_bars():
+    """
+    Retorna o grafico de atividade mensal como BARRAS DE EMOJI (Unicode BLOCK chars).
+    Isso garante renderizacao PERFEITA no GitHub, sem SVG quebrado nem tags cruas.
+    """
     today = datetime.date.today()
     start = today - datetime.timedelta(days=DAYS_BACK - 1)
 
-    events = gh_api(
-        f"/users/{GITHUB_USERNAME}/events/public?per_page=100"
-    ) or []
+    events = gh_api(f"/users/{GITHUB_USERNAME}/events/public?per_page=100") or []
 
     buckets = {}
     for i in range(DAYS_BACK):
@@ -240,62 +292,40 @@ def build_monthly_graph_svg():
             continue
         key = dt.isoformat()
         if key in buckets:
-            contributions = 1
+            c = 1
             if ev.get("type") == "PushEvent":
-                contributions = len(ev.get("payload", {}).get("commits", [1]))
-            buckets[key] = buckets.get(key, 0) + contributions
+                payload = ev.get("payload", {}) or {}
+                c = payload.get("distinct_size") or payload.get("size") or len(payload.get("commits", [1])) or 1
+            buckets[key] = buckets.get(key, 0) + c
 
-    days = sorted(buckets.keys())
-    values = [buckets[d] for d in days]
+    days_order = sorted(buckets.keys())
+    values = [buckets[d] for d in days_order]
     total = sum(values)
     max_v = max(values) if values else 1
     if max_v == 0:
         max_v = 1
 
-    width = 720
-    height = 120
-    padding_l = 36
-    padding_r = 10
-    padding_t = 18
-    padding_b = 28
-    chart_w = width - padding_l - padding_r
-    chart_h = height - padding_t - padding_b
-    n = len(days)
-    bar_width = (chart_w / n) * 0.75
-    gap = (chart_w / n) * 0.25
+    # Blocos unicode (1/8 steps): vazio, 1/8, 2/8 ... 8/8
+    blocks = [" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+    bar = ""
+    for v in values:
+        if v == 0:
+            bar += blocks[0]
+        else:
+            ratio = v / max_v  # 0..1
+            idx = max(1, min(8, int(round(ratio * 8))))
+            bar += blocks[idx]
 
-    bars_svg = []
-    for i, v in enumerate(values):
-        x = padding_l + i * (chart_w / n) + gap / 2
-        bar_h = 0 if max_v == 0 else (v / max_v) * chart_h
-        y = padding_t + (chart_h - bar_h)
-        color_start = "#56a3ff"
-        color_end = "#2f74c0"
-        fill = color_end if v > 0 else "#334155"
-        if v > 0:
-            ratio = math.sqrt(v / max_v)
-            r_ratio = int(int(color_start[1:3], 16) * (1 - ratio) + int(color_end[1:3], 16) * ratio)
-            g_ratio = int(int(color_start[3:5], 16) * (1 - ratio) + int(color_end[3:5], 16) * ratio)
-            b_ratio = int(int(color_start[5:7], 16) * (1 - ratio) + int(color_end[5:7], 16) * ratio)
-            fill = f"#{r_ratio:02x}{g_ratio:02x}{b_ratio:02x}"
-        title_day = datetime.date.fromisoformat(days[i]).strftime("%d/%m")
-        bars_svg.append(
-            f'<rect x="{x:.2f}" y="{y:.2f}" width="{bar_width:.2f}" height="{bar_h:.2f}" rx="2" '
-            f'fill="{fill}" opacity="0.9"><title>{title_day}: {v}</title></rect>'
-        )
+    stats_line = f"**📊 {total} contribuições** nos últimos {DAYS_BACK} dias · Pico diário: **{max_v}**"
+    date_line = f"<sub>De **{start.strftime('%d/%b')}** até **{today.strftime('%d/%b')}**</sub>"
 
-    max_label = f"{max_v}"
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="100%" role="img" aria-label="Atividade dos últimos {DAYS_BACK} dias">
-  <rect width="100%" height="100%" fill="transparent"/>
-  <text x="{padding_l}" y="{padding_t - 6}" font-family="Segoe UI, sans-serif" font-size="11" fill="#94a3b8">Contribuições (últimos {DAYS_BACK} dias) · Total: <tspan font-weight="bold" fill="#2f74c0">{total}</tspan></text>
-  <line x1="{padding_l}" y1="{padding_t + chart_h}" x2="{width - padding_r}" y2="{padding_t + chart_h}" stroke="#334155" stroke-width="1"/>
-  <text x="{padding_l - 4}" y="{padding_t + chart_h + 1}" font-size="9" fill="#64748b" text-anchor="end">0</text>
-  <text x="{padding_l - 4}" y="{padding_t + 4}" font-size="9" fill="#64748b" text-anchor="end">{max_label}</text>
-  {''.join(bars_svg)}
-  <text x="{padding_l}" y="{height - 8}" font-size="9" fill="#64748b">{start.strftime("%b %d")}</text>
-  <text x="{width - padding_r}" y="{height - 8}" font-size="9" fill="#64748b" text-anchor="end">{today.strftime("%b %d")}</text>
-</svg>'''
-    return svg
+    return (
+        f"{stats_line}\n\n"
+        f"<div align=\"center\">\n\n"
+        f"```\n{bar}\n```\n\n"
+        f"</div>\n\n"
+        f"{date_line}\n"
+    )
 
 
 def main():
@@ -311,8 +341,7 @@ def main():
     activity = fetch_recent_activity()
     content = replace_chunk(content, "RECENT_ACTIVITY", build_activity_chunk(activity))
 
-    graph_svg = build_monthly_graph_svg()
-    content = replace_chunk(content, "MONTHLY_ACTIVITY_GRAPH", f"<div align=\"center\">\n{graph_svg}\n</div>\n")
+    content = replace_chunk(content, "MONTHLY_ACTIVITY_GRAPH", build_monthly_activity_bars())
 
     README_PATH.write_text(content, encoding="utf-8")
     print("[OK] README atualizado com sucesso!")

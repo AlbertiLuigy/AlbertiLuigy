@@ -92,46 +92,39 @@
 
 ### 🛠️ Projetos Mais Recentes
 <!-- LATEST_PROJECTS:START -->
-- [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — Sem descrição
-  <br>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-b07219.svg?style=flat-square&logoColor=white" height="18"/>  <sub>🕒 15 min atrás</sub>
-- [Projeto-Sistema-jogo-de-xadrez](https://github.com/AlbertiLuigy/Projeto-Sistema-jogo-de-xadrez) — Sem descrição
-  <br>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-b07219.svg?style=flat-square&logoColor=white" height="18"/>  <sub>🕒 14 dias atrás</sub>
-- [Projeto-Web-Service-com-Spring-Boot-e-JPA](https://github.com/AlbertiLuigy/Projeto-Web-Service-com-Spring-Boot-e-JPA) — Sem descrição
-  <br>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-b07219.svg?style=flat-square&logoColor=white" height="18"/>  <sub>🕒 18 dias atrás</sub>
-- [demo-dao-jdbc](https://github.com/AlbertiLuigy/demo-dao-jdbc) — Sem descrição
-  <br>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-b07219.svg?style=flat-square&logoColor=white" height="18"/>  <sub>🕒 1 mês(es) atrás</sub>
+- **[Spring Boot E Banco Mongodb Web Service Nosql](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-)**
+  <br> <sub>**`Java`** · 🕒 22 min atrás</sub>
+- **[Sistema Jogo De Xadrez](https://github.com/AlbertiLuigy/Projeto-Sistema-jogo-de-xadrez)**
+  <br> <sub>**`Java`** · 🕒 14 dias atrás</sub>
+- **[Web Service Com Spring Boot E Jpa](https://github.com/AlbertiLuigy/Projeto-Web-Service-com-Spring-Boot-e-JPA)**
+  <br> <sub>**`Java`** · 🕒 18 dias atrás</sub>
+- **[Dao Jdbc](https://github.com/AlbertiLuigy/demo-dao-jdbc)**
+  <br> <sub>**`Java`** · 🕒 1 mês(es) atrás</sub>
 <!-- LATEST_PROJECTS:END -->
 
 ### 🏃 Minha Atividade
 <!-- RECENT_ACTIVITY:START -->
-- 📌 1 commit(s) em `main` de [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — <sub>_33d05828b7b4644085b8e561852e0062b52bd80c_</sub>
-  <br>&nbsp;&nbsp;<sub>🕒 15 min atrás</sub>
-- 📌 1 commit(s) em `main` de [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — <sub>_2e46aead7a3a20d7d22ce857a6828a4ba4d4fd98_</sub>
-  <br>&nbsp;&nbsp;<sub>🕒 6 dias atrás</sub>
-- 📌 1 commit(s) em `main` de [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — <sub>_aa2a3747ace43a7ceb960c10d4fefeff3669cbd3_</sub>
-  <br>&nbsp;&nbsp;<sub>🕒 5 dias atrás</sub>
-- 📌 1 commit(s) em `main` de [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — <sub>_7af9457814682a0143bfa72a102c129c82e8b7cb_</sub>
-  <br>&nbsp;&nbsp;<sub>🕒 6 dias atrás</sub>
-- 📌 1 commit(s) em `main` de [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — <sub>_f01f160ef5b523bd305e56ed119e126fa536642a_</sub>
-  <br>&nbsp;&nbsp;<sub>🕒 6 dias atrás</sub>
-- 📌 1 commit(s) em `main` de [Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-) — <sub>_dadedba98cb80159c6239ae5d5c5087751ff2372_</sub>
-  <br>&nbsp;&nbsp;<sub>🕒 7 dias atrás</sub>
+- 📌 15 commit(s) em **[Spring Boot E Banco Mongodb Web Service Nosql](https://github.com/AlbertiLuigy/Projeto-Spring-Boot-e-Banco-MongoDB-Web-Service-NoSQL-)**
+  <br> <sub>🕒 14 dias atrás</sub>
+- 📌 12 commit(s) em **[Sistema Jogo De Xadrez](https://github.com/AlbertiLuigy/Projeto-Sistema-jogo-de-xadrez)**
+  <br> <sub>🕒 17 dias atrás</sub>
+- 📌 1 commit(s) em **[Web Service Com Spring Boot E Jpa](https://github.com/AlbertiLuigy/Projeto-Web-Service-com-Spring-Boot-e-JPA)**
+  <br> <sub>🕒 19 dias atrás</sub>
 <!-- RECENT_ACTIVITY:END -->
 
 ### 📈 Atividade Mensal
 <!-- MONTHLY_ACTIVITY_GRAPH:START -->
+**📊 53 contribuições** nos últimos 30 dias · Pico diário: **10**
+
 <div align="center">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 120" width="100%" role="img" aria-label="Atividade dos últimos 30 dias">
-  <rect width="100%" height="100%" fill="transparent"/>
-  <text x="36" y="12" font-family="Segoe UI, sans-serif" font-size="11" fill="#94a3b8">Contribuições (últimos 30 dias) · Total: <tspan font-weight="bold" fill="#2f74c0">53</tspan></text>
-  <line x1="36" y1="92" x2="710" y2="92" stroke="#334155" stroke-width="1"/>
-  <text x="32" y="93" font-size="9" fill="#64748b" text-anchor="end">0</text>
-  <text x="32" y="22" font-size="9" fill="#64748b" text-anchor="end">10</text>
-  <rect x="38.81" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>01/09: 0</title></rect><rect x="61.27" y="69.80" width="16.85" height="22.20" rx="2" fill="#4089dc" opacity="0.9"><title>02/09: 3</title></rect><rect x="83.74" y="84.60" width="16.85" height="7.40" rx="2" fill="#4994eb" opacity="0.9"><title>03/09: 1</title></rect><rect x="106.21" y="84.60" width="16.85" height="7.40" rx="2" fill="#4994eb" opacity="0.9"><title>04/09: 1</title></rect><rect x="128.67" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>05/09: 0</title></rect><rect x="151.14" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>06/09: 0</title></rect><rect x="173.61" y="84.60" width="16.85" height="7.40" rx="2" fill="#4994eb" opacity="0.9"><title>07/09: 1</title></rect><rect x="196.07" y="84.60" width="16.85" height="7.40" rx="2" fill="#4994eb" opacity="0.9"><title>08/09: 1</title></rect><rect x="218.54" y="62.40" width="16.85" height="29.60" rx="2" fill="#3d85d7" opacity="0.9"><title>09/09: 4</title></rect><rect x="241.01" y="40.20" width="16.85" height="51.80" rx="2" fill="#357bca" opacity="0.9"><title>10/09: 7</title></rect><rect x="263.47" y="55.00" width="16.85" height="37.00" rx="2" fill="#3a81d2" opacity="0.9"><title>11/09: 5</title></rect><rect x="285.94" y="77.20" width="16.85" height="14.80" rx="2" fill="#448de2" opacity="0.9"><title>12/09: 2</title></rect><rect x="308.41" y="77.20" width="16.85" height="14.80" rx="2" fill="#448de2" opacity="0.9"><title>13/09: 2</title></rect><rect x="330.88" y="84.60" width="16.85" height="7.40" rx="2" fill="#4994eb" opacity="0.9"><title>14/09: 1</title></rect><rect x="353.34" y="69.80" width="16.85" height="22.20" rx="2" fill="#4089dc" opacity="0.9"><title>15/09: 3</title></rect><rect x="375.81" y="18.00" width="16.85" height="74.00" rx="2" fill="#2f74c0" opacity="0.9"><title>16/09: 10</title></rect><rect x="398.27" y="77.20" width="16.85" height="14.80" rx="2" fill="#448de2" opacity="0.9"><title>17/09: 2</title></rect><rect x="420.74" y="77.20" width="16.85" height="14.80" rx="2" fill="#448de2" opacity="0.9"><title>18/09: 2</title></rect><rect x="443.21" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>19/09: 0</title></rect><rect x="465.67" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>20/09: 0</title></rect><rect x="488.14" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>21/09: 0</title></rect><rect x="510.61" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>22/09: 0</title></rect><rect x="533.07" y="69.80" width="16.85" height="22.20" rx="2" fill="#4089dc" opacity="0.9"><title>23/09: 3</title></rect><rect x="555.54" y="62.40" width="16.85" height="29.60" rx="2" fill="#3d85d7" opacity="0.9"><title>24/09: 4</title></rect><rect x="578.01" y="84.60" width="16.85" height="7.40" rx="2" fill="#4994eb" opacity="0.9"><title>25/09: 1</title></rect><rect x="600.47" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>26/09: 0</title></rect><rect x="622.94" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>27/09: 0</title></rect><rect x="645.41" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>28/09: 0</title></rect><rect x="667.87" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>29/09: 0</title></rect><rect x="690.34" y="92.00" width="16.85" height="0.00" rx="2" fill="#334155" opacity="0.9"><title>30/09: 0</title></rect>
-  <text x="36" y="112" font-size="9" fill="#64748b">Sep 01</text>
-  <text x="710" y="112" font-size="9" fill="#64748b" text-anchor="end">Sep 30</text>
-</svg>
+
+```
+ ▂▁▁  ▁▁▃▆▄▂▂▁▂█▂▂    ▂▃▁     
+```
+
 </div>
+
+<sub>De **01/Sep** até **30/Sep**</sub>
 <!-- MONTHLY_ACTIVITY_GRAPH:END -->
 
 ---
