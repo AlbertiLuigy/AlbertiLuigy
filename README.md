@@ -34,7 +34,7 @@ Matozinhos, MG · out/2026 – atual · tempo integral
 - Módulo de **emissão de contratos**, com fluxo direto ou vinculado a orçamentos prévios
 - **Dashboard de metas** e BI comercial para vendedores, com histórico de vendas
 - Aplicativos **Android** com publicação e gestão de versões no **Google Play Console**
-- Análise de código e engenharia reversa de um sistema legado em **PHP** (mais de 10 anos), com relatório técnico de refatoração
+- Análise de código e engenharia reversa de um sistema legado em **PHP** (mais de 5 anos), com relatório técnico de refatoração
 - Suporte técnico e sustentação da plataforma
 
 **Desenvolvedor Full-Stack e QA · Freelance (projetos para clientes)**
