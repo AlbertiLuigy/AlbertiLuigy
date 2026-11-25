@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # Alberti Luigy Bustamante
@@ -40,21 +39,15 @@
 ## Projetos em destaque
 
 **SGRV · Gestão de Veículos e Relatórios**
-
 Plataforma privada para métricas de um centro automotivo: dashboard com BI (Recharts), autenticação JWT, validação com Zod e relatórios em PDF automatizados.
-
 `React` `Node.js` `Express` `PostgreSQL` `Supabase` `GitHub Actions`
 
 **SUO · Gestão de Automóveis**
-
 Digitaliza ordens de serviço no lugar de processos manuais, com dupla validação de login, busca em tempo real e pasta digital por cliente com histórico.
-
 `React` `Node.js` `Express` `PostgreSQL` `Vercel` `Render`
 
 **APROVEITA · Gestão de Alimentação** 🏆
-
 Premiado na PUC Minas (2025). Controla o inventário de ingredientes, a validade e sugere receitas com o que há disponível.
-
 `HTML` `CSS` `JavaScript`
 
 ---
@@ -64,17 +57,14 @@ Premiado na PUC Minas (2025). Controla o inventário de ingredientes, a validade
 <sub>⚙️ Atualizada automaticamente todos os dias via GitHub Actions.</sub>
 
 **Projetos mais recentes**
-
 <!-- LATEST_PROJECTS:START -->
 <!-- LATEST_PROJECTS:END -->
 
 **Últimos commits**
-
 <!-- RECENT_ACTIVITY:START -->
 <!-- RECENT_ACTIVITY:END -->
 
 **Últimos 30 dias**
-
 <!-- MONTHLY_ACTIVITY_GRAPH:START -->
 <!-- MONTHLY_ACTIVITY_GRAPH:END -->
 
