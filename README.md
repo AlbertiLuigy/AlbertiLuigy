@@ -21,7 +21,7 @@
 - 🌱 &nbsp; Atualmente aprofundando em **Spring Boot**, **TDD** e **Docker**
 - 🏆 &nbsp; Reconhecimento: Melhores Trabalhos da Disciplina (PUC Minas - 2025)
 - 📍 &nbsp; Pedro Leopoldo, MG - Brasil
-- ✉️ &nbsp; Entre em contato: **abertiluigy@gmail.com**
+- ✉️ &nbsp; Entre em contato: **albertiluigy@gmail.com**
 
 <br>
 
